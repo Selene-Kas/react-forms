@@ -5,6 +5,9 @@ export default function Authenticate({ token }) {
   const [error, setError] = useState(null);
   async function handleClick() {
     //console.log("it fires");
+    if(password.length < 8) {
+      setError(' your Password must be 8 characters')
+    }
     try {
       const response = await fetch(
         "https://fsa-jwt-practice.herokuapp.com/authenticate", 
@@ -15,19 +18,24 @@ export default function Authenticate({ token }) {
             Authorization: `Bearer ${token}`,
           }
         }
-      );
+      )
       const result = await response.json();
       setSuccessMessage(result.message);
+      //console.log(result);
     } catch (error) {
       setError(error.message);
     }
+  
+   
   }
+
+  
   return (
-    <div>
+    <div className="auth">
       <h2>Authenicate!</h2>
-      {successMessage && <p>{successMessage}</p>}
-      {error && <p>{error}</p>}
-      <button onClick={handleClick}>Authenticate Token! </button>
+      {successMessage && <p>{successMessage} </p>}
+      {error && <p>{error} Something is wrong! </p>}
+      <button onClick={handleClick} >Authenticate Token! </button>
     </div>
   );
 }
